@@ -63,14 +63,7 @@ public class Festmeny
         if (this.licitekSzama == 0){
             this.legmagasabbLicit = 100;
         }else{
-           int ujLicit = (int)(this.legmagasabbLicit * 1.1);
-           String szovegesLicit = String.valueOf(ujLicit);
-           int hossz = szovegesLicit.length();
-           StringBuilder veglegesLicit = new StringBuilder(szovegesLicit.substring(0,2));
-            for (int i = 0; i < hossz-2; i++) {
-                veglegesLicit.append(0);
-            }
-            int veglegesLicitOsszeg = Integer.parseInt(veglegesLicit.toString());
+            int veglegesLicitOsszeg = getKrekitettLicitSzoveggeAlakitassal();
             this.legmagasabbLicit = veglegesLicitOsszeg;
         }
         this.licitekSzama++;
@@ -79,6 +72,27 @@ public class Festmeny
 
     public  void licit( int mertek)
     {
-        //TODO: eljárás megvalósítása
+        if (this.elkelt){
+            throw new RuntimeException("A festmény már elkelt");
+        }
+        if (this.licitekSzama == 0){
+            this.legmagasabbLicit = 100;
+        }else{
+            int ujLicit = legmagasabbLicit * (100 + mertek) / 100;
+            this.legmagasabbLicit = getKrekitettLicitSzoveggeAlakitassal(ujLicit);
+        }
+        this.licitekSzama++;
+        this.legutolsoLicitIdeje= LocalDateTime.now();
     }
+    private int getKrekitettLicitSzoveggeAlakitassal() {
+    int ujLicit = (int)(this.legmagasabbLicit * 1.1);
+    String szovegesLicit = String.valueOf(ujLicit);
+    int hossz = szovegesLicit.length();
+    StringBuilder veglegesLicit = new StringBuilder(szovegesLicit.substring(0,2));
+    for (int i = 0; i < hossz-2; i++) {
+        veglegesLicit.append(0);
+    }
+    int veglegesLicitOsszeg = Integer.parseInt(veglegesLicit.toString());
+    return veglegesLicitOsszeg;
+}
 }
