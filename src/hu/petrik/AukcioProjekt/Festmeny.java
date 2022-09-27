@@ -17,8 +17,10 @@ public class Festmeny
     this.cim = cim;
     this.festo = festo;
     this.stilus = stilus;
-
-    //TODO: többi adattag beállítása
+    this.licitekSzama = 0;
+    this.legmagasabbLicit = 0;
+    this.legutolsoLicitIdeje = null;
+    this.elkelt = false;
     }
 
     public String getCim() {
@@ -55,7 +57,24 @@ public class Festmeny
 
     public void licit()
     {
-        //TODO: eljárás megvalósítása
+        if (this.elkelt){
+            throw new RuntimeException("A festmény már elkelt");
+        }
+        if (this.licitekSzama == 0){
+            this.legmagasabbLicit = 100;
+        }else{
+           int ujLicit = (int)(this.legmagasabbLicit * 1.1);
+           String szovegesLicit = String.valueOf(ujLicit);
+           int hossz = szovegesLicit.length();
+           StringBuilder veglegesLicit = new StringBuilder(szovegesLicit.substring(0,2));
+            for (int i = 0; i < hossz-2; i++) {
+                veglegesLicit.append(0);
+            }
+            int veglegesLicitOsszeg = Integer.parseInt(veglegesLicit.toString());
+            this.legmagasabbLicit = veglegesLicitOsszeg;
+        }
+        this.licitekSzama++;
+        this.legutolsoLicitIdeje= LocalDateTime.now();
     }
 
     public  void licit( int mertek)
